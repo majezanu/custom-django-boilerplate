@@ -1,0 +1,21 @@
+version: "3.8"
+services: 
+    # Django main service
+    django:
+        build: .
+        container_name: Django-custom-boilerplate
+        command: python3 app/manage.py runserver 0.0.0.0:8000
+        volumes:
+            - .:/usr/src/app/
+        ports:
+            - "8000:8000"
+        environment:
+            - DEBUG=1
+            - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1
+    
+    # Project unittest
+    testing:
+        build: .
+        container_name: Backend-Test-Sirias-unittest
+        volumes:
+            - .:/usr/src/app/
