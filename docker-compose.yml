@@ -1,21 +1,44 @@
-version: "3.8"
+version: "3"
 services: 
-    # Django main service
+    db:
+        image: postgres
+        volumes:
+          - ./data/db:/var/lib/postgresql/data:delegated
+        environment:
+          - POSTGRES_DB=example
+          - POSTGRES_USER=example
+          - POSTGRES_PASSWORD=example
+        ports: 
+            - 5432:5432
     django:
         build: .
         container_name: Django-custom-boilerplate
-        command: python3 app/manage.py runserver 0.0.0.0:8000
+        command: python3 app/manage.py runserver 0.0.0.0:8000 --settings=app.settings.dev_docker
         volumes:
             - .:/usr/src/app/
         ports:
             - "8000:8000"
-        environment:
-            - DEBUG=1
-            - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1
-    
+        depends_on: 
+            - db
+            - migration
+            - staticfiles
+    migration:
+        build: .
+        volumes:
+            - .:/usr/src/app/
+        command: python3 app/manage.py migrate --settings=app.settings.dev_docker
+        depends_on: 
+            - db
+    staticfiles:
+        build: .
+        volumes:
+            - .:/usr/src/app/
+        command: python3 app/manage.py collectstatic --no-input --settings=app.settings.dev_docker
+        depends_on: 
+            - migration
     # Project unittest
     testing:
         build: .
-        container_name: Backend-Test-Sirias-unittest
+        container_name: Django-custom-boilerplate-unittest
         volumes:
             - .:/usr/src/app/
