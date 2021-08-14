@@ -1,0 +1,38 @@
+{% extends './auth_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %} 
+{% block title %}
+  {{block.super}} Login
+{% endblock %}
+
+{% block form %}
+
+  {% if form.errors %}
+    {% for error in form.errors %}
+        <p>{{error.message}}</p>
+    {% endfor %}
+  {% endif %}
+  
+  <div class="row justify-content-md-center">
+    <div class="col-sm-8">
+      <div class="card text-center">
+        <img class="card-img-top" src="{% static 'img/secure.jpg'%}" alt="Card image cap">
+        <div class="card-body">
+          <form method="post" action="{% url 'custom_auth:login' %}">
+            {% csrf_token %}
+
+            {{ form|crispy }}
+
+            <div class="form-group">
+              <input class="btn btn-primary" type="submit" value="Login" />
+              <input type="hidden" name="next" value="{{ next }}" />
+              <p class="text-center">Lost password? <a href="{% url "custom_auth:reset_password" %}">Reset password</a>.</p>
+              <p class="text-center">Don't have an account? <a href="{% url "custom_auth:register" %}">Create an account</a>.</p>
+            </div>
+          </form>
+        </div>  
+      </div>
+    </div>
+  </div>
+  
+{% endblock %}
