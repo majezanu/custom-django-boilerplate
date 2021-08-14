@@ -18,12 +18,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include, path
 from django.urls import path
-from . import views 
+from . import views
+import custom_auth.urls
 
 urlpatterns = [
-    path('', views.homepage),
+    path('', views.HomePage.as_view(), name='home'),
+    path('about', views.AboutPage.as_view(), name='about'),
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('auth/', include(custom_auth.urls))
 ]
 
 

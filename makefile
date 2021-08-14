@@ -19,7 +19,13 @@ dockerUp:
 	docker-compose up
 
 dockerAll: dockerBuild dockerUp
+
+dockerBash:
+	docker-compose exec django bash
 	
+dockerCollectStatic: 
+	docker-compose exec django python3 app/manage.py collectstatic --no-input --settings=app.settings.dev_docker
+
 dockerSuperUser:
 	docker-compose exec django python3 app/manage.py createsuperuser --settings=app.settings.dev_docker
 

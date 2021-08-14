@@ -19,6 +19,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -29,3 +30,7 @@ DATABASES = {
         'PORT': env('DB_PORT'),
     }
 }
+
+EMAIL_HOST=env('EMAIL_HOST')
+EMAIL_PORT=env('EMAIL_PORT')
+EMAIL_USE_TLS=False
