@@ -21,9 +21,9 @@ services:
         ports:
             - "8000:8000"
         depends_on: 
-            - db
             - migration
             - staticfiles
+            - db
             - maildevs
         networks: 
             - boilerplate-network

@@ -4,4 +4,5 @@ djangorestframework
 django-environ
 django-bootstrap4
 django-crispy-forms
+django-channels-notifications
 psycopg2

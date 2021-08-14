@@ -95,7 +95,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'bootstrap4',
     'custom_auth',
-    'crispy_forms'
+    'crispy_forms',
+    'django_channels_notifications'
 )
 
 MIDDLEWARE = [
@@ -115,5 +116,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'home'
+
+AUTH_USER_MODEL = 'custom_auth.CustomUser'
 
 
