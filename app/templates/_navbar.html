@@ -1,0 +1,10 @@
+<li class="{% if active_link == "home" %} active {%  endif  %} nav-item" >
+    <a class="nav-link"  href="{%  url 'home' %}">
+        <span>Home</span>
+    </a>
+</li>
+<li {% if active_link == "about" %} class="active"{% endif  %}>
+    <a class="nav-link" href="{%  url 'about' %}">
+        <span>About</span>
+    </a>
+</li>

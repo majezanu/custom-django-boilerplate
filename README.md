@@ -1,5 +1,3 @@
-{% comment "This comment section will be deleted in the generated project" %}
-
 **A Fantastic Django Custom project starter.**
 
 This project it's based on the Django Edge template (https://django-edge.readthedocs.io/en/latest/)
@@ -11,62 +9,76 @@ This project it's based on the Django Edge template (https://django-edge.readthe
 * Docker
 
 ## Quick start:
+This section describes the steps to follow to lift the project from this repository. You have two options to do this, one is using docker and docker-compose and the other is using the traditional way with a virtual environment.
+### Common steps
+This section describes common steps that are recommended to be done regardless of the option chosen to build the project.
 
-Before creating a new project from this template, you need to create a fresh virtual environment, I recomend use Virtualenv:
+I recommend run the following commands to generate the correct files to run this project.
 
-1. `$ virtualenv -p python3 <envname>`
-2. `$ source <envname>/bin/activate` (use the appropriate activate script based on your shell)
+1. To create some `.env` files and `docker-compose` file you need to run:
+```bash
+$ make initEnvironment
+```
+This command will create two `.env` files in `app/app/settings` folder:
+- `local.env`
+- `local.docker.env` 
 
-Create your new _edgy_ django project:
+These two files are the same except for the variable DB_HOST. 
 
-1. `$ django-admin.py startproject --template=https://github.com/majezanu/custom-django-boilerplate --extension=py,md,html,env <projname>`
-2. `$ cd projname`
-3. `$ pip install -r requirements.txt `
-4. `$ cd app`
-5. `$ cp projname/settings/local.sample.env projname/settings/local.env`
-6. `$ python manage.py migrate`
-7. `$ python manage.py createsuperuser`
-8. `$ python manage.py runserver`
+`local.env` has `DB_HOST=localhost` and `local.docker.env` has `DB_HOST=db` Therefore, the latter is necessary so that the containers can be interconnected in docker.
 
-If you need to keep `requirements.txt` updated then run
+That command also will create a `docker-compose.override.yml` file in root folder.
 
-    pipenv lock --requirements > requirements/base.txt
-    echo "-r base.txt" > requirements/development.txt
-    pipenv lock --requirements --dev >> requirements/development.txt
+2. You need to make sure that these variables in the `docker-compose.override.yml` are correctly mapped in the .env as follows
+- POSTGRES_DB => DB_NAME
+- POSTGRES_USER => DB_USER
+- POSTGRES_PASSWORD => DB_PASSWORD
 
-Rest of this README will be copied to the generated project.
+### Using docker (recomended)
+This section describes the steps to build the project using docker and docker-compose. Some commands are used that can be seen in the `makefile` file
 
---------------------------------------------------------------------------------------------
+1. You can build the containers using the following command:
+```bash
+$ make dockerBuild
+```
+Or can start the container using:
+```bash
+$ make dockerUp
+```
+You can also do the above two things using the following command
+```bash
+$ make dockerAll
+```
+The `docker-compose` file is made for the database to get up, run migrations and static files and then I got the django server up
 
-{% endcomment %}
+2. Finally, you can create a super user with:
+```bash
+$ make dockerSuperUser
+```
 
-# app
+### Normal way
+In case you don't want to use docker, then you would have to use the "normal" way of setting up a project in django.
 
-app is a _short description_. It is built with [Python][0] using the [Django Web Framework][1].
-
-This project has the following basic apps:
-
-* App1 (short desc)
-* App2 (short desc)
-* App3 (short desc)
-
-## Installation
-
-### Quick start
-
-To set up a development environment quickly, first install Python 3. It
-comes with virtualenv built-in. So create a virtual env by:
-
-    1. `$ python3 -m venv app`
-    2. `$ . app/bin/activate`
-
-Install all dependencies:
-
-    pip install -r requirements.txt
-
-Run migrations:
-
-    python manage.py migrate
+1. You need to create and activate a new virtual environment so that you can install all the necessary packages for your project there.
+```bash
+$ virtualenv -p python3 <envname>
+$ source ./<envname>/bin/activate
+```
+2. You can run the following command to install requirements:
+```bash
+$ make requirements
+``` 
+Note: You can also use the normal command `pip install -r requirements.txt`
+3. (Optional) You can use the following command to use the docker-compose to up a Postgres database:
+```bash
+$ make runDb
+```
+Note: This command use the `docker-compose.yml` file and it will run the container in detached mode.
+4. Finally, you can run the following command to run the django proyect 
+```bash
+$ make run
+```
+Note: You can also use the normal command `python3 app/manage.py runserver`
 
 ### Detailed instructions
 

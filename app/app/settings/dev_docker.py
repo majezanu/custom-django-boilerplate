@@ -1,12 +1,11 @@
-from .dev_base import *           # NOQA
+from .dev_base import *
 
 # Use 12factor inspired environment variables or from a file
 import environ
 env = environ.Env()
-
 # Create a local.env file in the settings directory
 # But ideally this env file should be outside the git repo
-env_file = Path(__file__).resolve().parent / 'local.env'
+env_file = Path(__file__).resolve().parent / 'local.docker.env'
 if env_file.exists():
     environ.Env.read_env(str(env_file))
 
@@ -34,6 +33,4 @@ DATABASES = {
 
 EMAIL_HOST=env('EMAIL_HOST')
 EMAIL_PORT=env('EMAIL_PORT')
-EMAIL_HOST_USER=env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD=env('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS=env('EMAIL_USE_TLS')
+EMAIL_USE_TLS=False
